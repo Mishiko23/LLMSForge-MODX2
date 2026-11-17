@@ -4,7 +4,8 @@ namespace LLMSForge;
 
 final class Visits
 {
-    public function __construct(private string $directory) {}
+    private string $directory;
+    public function __construct(string $directory) { $this->directory = $directory; }
     public static function bot(string $agent): ?string
     {
         foreach (['OAI-SearchBot', 'ChatGPT-User', 'GPTBot', 'Claude-SearchBot', 'Claude-User', 'ClaudeBot', 'PerplexityBot', 'Perplexity-User', 'Applebot', 'Amazonbot', 'Bytespider'] as $name) {

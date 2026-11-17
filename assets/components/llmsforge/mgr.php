@@ -5,7 +5,7 @@ require_once MODX_CORE_PATH . 'config/' . MODX_CONFIG_KEY . '.inc.php';
 require_once MODX_CONNECTORS_PATH . 'index.php';
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
-$reply = static function (bool $success, array $data = [], string $message = ''): never {
+$reply = static function (bool $success, array $data = [], string $message = ''): void {
     echo json_encode(['success' => $success, 'object' => $data, 'message' => $message], JSON_INVALID_UTF8_SUBSTITUTE); exit;
 };
 if (!$modx->user || !$modx->user->isAuthenticated('mgr') || !$modx->hasPermission('settings')) {
@@ -21,7 +21,7 @@ try {
     $action = $_POST['action'] ?? '';
     if ($action === 'contexts') {
         $items = [];
-        foreach ($modx->getIterator(\MODX\Revolution\modContext::class, ['key:!=' => 'mgr']) as $context) {
+        foreach ($modx->getIterator(\modContext::class, ['key:!=' => 'mgr']) as $context) {
             if ($context->checkPolicy('view')) { $items[] = ['key' => $context->get('key'), 'name' => $context->get('name') ?: $context->get('key')]; }
         }
         $reply(true, ['contexts' => $items]);
@@ -29,14 +29,14 @@ try {
     $key = (string) ($_POST['context'] ?? '');
     $siteContext = $manager->context($key);
     if ($action === 'diagnostics') {
-        $plugin = $modx->getObject(\MODX\Revolution\modPlugin::class, ['name' => 'LLMSForgeRouter']);
-        $tracker = $modx->getObject(\MODX\Revolution\modPlugin::class, ['name' => 'LLMSForgeVisits']);
+        $plugin = $modx->getObject(\modPlugin::class, ['name' => 'LLMSForgeRouter']);
+        $tracker = $modx->getObject(\modPlugin::class, ['name' => 'LLMSForgeVisits']);
         $visitDir = MODX_CORE_PATH . 'components/llmsforge/var/visits';
         $writablePath = $visitDir;
         while (!file_exists($writablePath) && dirname($writablePath) !== $writablePath) { $writablePath = dirname($writablePath); }
         $basePath = rtrim((string) $siteContext->getOption('base_path', MODX_BASE_PATH), '/\\') . '/';
         $fileConflict = is_file($basePath . 'llms.txt');
-        $resourceConflict = $modx->getObject(\MODX\Revolution\modResource::class, ['context_key' => $key, 'uri' => 'llms.txt', 'deleted' => 0]) !== null;
+        $resourceConflict = $modx->getObject(\modResource::class, ['context_key' => $key, 'uri' => 'llms.txt', 'deleted' => 0]) !== null;
         $checks = [
             'Маршрут llms.txt' => $plugin && !(bool) $plugin->get('disabled'),
             'Журнал посещений' => $tracker && !(bool) $tracker->get('disabled'),
@@ -46,7 +46,7 @@ try {
             'Адрес llms.txt свободен' => !$fileConflict && !$resourceConflict,
             'Расширение DOM' => extension_loaded('dom'),
             'Расширение mbstring' => extension_loaded('mbstring'),
-            'PHP 8.1+' => PHP_VERSION_ID >= 80100,
+            'PHP 7.4+' => PHP_VERSION_ID >= 70400,
         ];
         $reply(true, ['checks' => $checks, 'url' => rtrim((string) $siteContext->getOption('site_url'), '/') . '/llms.txt']);
     }
@@ -75,6 +75,6 @@ try {
     $reply(true, ['text' => (new \LLMSForge\Generator($modx))->generate($key, $values)]);
 } catch (\InvalidArgumentException $error) { http_response_code(400); $reply(false, [], $error->getMessage()); }
 catch (\Throwable $error) {
-    $modx->log(\MODX\Revolution\modX::LOG_LEVEL_ERROR, '[LLMSForge manager] ' . $error->getMessage());
+    $modx->log(\modX::LOG_LEVEL_ERROR, '[LLMSForge manager] ' . $error->getMessage());
     http_response_code(500); $reply(false, [], 'Ошибка обработки запроса. Подробности в журнале MODX.');
 }

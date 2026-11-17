@@ -1,3 +1,9 @@
+# MODX 2 port — 2026-11-17
+
+- MODX 2.8+ classes and package builder; miniShop2 product fields.
+- PHP 7.4 syntax and component-scoped compatibility helpers.
+- Local PHP 7.4 checks; server integration remains to be verified.
+
 # Changelog
 
 ## 1.0.0-pl — 2026-11-04

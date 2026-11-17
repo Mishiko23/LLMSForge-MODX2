@@ -1,13 +1,17 @@
 <?php
 declare(strict_types=1);
 namespace LLMSForge;
-use MODX\Revolution\{modX, modResource, modResourceGroupResource};
+require_once __DIR__ . '/Compat.php';
+use modX;
+use modResource;
+use modResourceGroupResource;
 require_once __DIR__ . '/Renderer.php';
 require_once __DIR__ . '/HtmlToMarkdown.php';
 
 final class Documents
 {
-    public function __construct(private modX $modx) {}
+    private modX $modx;
+    public function __construct(modX $modx) { $this->modx = $modx; }
 
     private static function dateAllowsExport(modResource $resource): bool
     {
@@ -26,7 +30,7 @@ final class Documents
     public static function validate(string $json): array
     {
         $items = json_decode($json, true);
-        if (!str_starts_with(ltrim($json), '[') || !is_array($items) || !array_is_list($items) || count($items) > 200) { throw new \InvalidArgumentException('Допустимо до 200 карточек страниц.'); }
+        if (!\LLMSForge\Compat::startsWith(ltrim($json), '[') || !is_array($items) || !\LLMSForge\Compat::isList($items) || count($items) > 200) { throw new \InvalidArgumentException('Допустимо до 200 карточек страниц.'); }
         $slugs = [];
         foreach ($items as $item) {
             if (!is_array($item)) { throw new \InvalidArgumentException('Некорректная карточка.'); }
@@ -86,10 +90,14 @@ final class Documents
             $value = $resource->getTVValue($name);
             if (is_scalar($value) && trim((string) $value) !== '') { $extra[] = '- ' . $name . ': ' . $renderer->text((string) $value); }
         }
-        if (class_exists(\MiniShop3\Model\msProductData::class)) {
-            $data = $this->modx->getObject(\MiniShop3\Model\msProductData::class, $item['resource_id']);
+        // Load the optional miniShop2 model without initializing its cart/session.
+        $shopPath = $resource->get('class_key') === 'msProduct'
+            ? rtrim($this->modx->getOption('minishop2.core_path', null, MODX_CORE_PATH . 'components/minishop2/'), '/\\') . '/model/'
+            : '';
+        if ($shopPath !== '' && is_file($shopPath . 'minishop2/msproductdata.class.php') && $this->modx->addPackage('minishop2', $shopPath)) {
+            $data = $this->modx->getObject('msProductData', $item['resource_id']);
             if ($data) {
-                foreach (array_filter(array_map('trim', explode(',', (string) $siteContext->getOption('llmsforge.ms3_fields', 'price,article')))) as $field) {
+                foreach (array_filter(array_map('trim', explode(',', (string) $siteContext->getOption('llmsforge.ms2_fields', 'price,article')))) as $field) {
                     if (!in_array($field, ['price', 'old_price', 'article', 'weight', 'vendor', 'made_in'], true)) { continue; }
                     $value = $data->get($field);
                     if (is_scalar($value) && trim((string) $value) !== '') { $extra[] = '- ' . $field . ': ' . $renderer->text((string) $value); }

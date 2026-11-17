@@ -13,7 +13,7 @@
         <label>Название сайта<input id="lf-title" maxlength="500" required></label>
         <label>Краткое описание<textarea id="lf-description" rows="3"></textarea></label>
         <label>TV для Markdown-карточек (имена через запятую)<input id="lf-tv_names" placeholder="Например: brand,material"></label>
-        <label>Поля miniShop3 для Markdown-карточек<input id="lf-ms3_fields" placeholder="price,article"></label><p class="lf-muted">Доступны price, old_price, article, weight, vendor, made_in. Поля используются только при автоматическом получении текста ресурса.</p>
+        <label>Поля miniShop2 для Markdown-карточек<input id="lf-ms2_fields" placeholder="price,article"></label><p class="lf-muted">Доступны price, old_price, article, weight, vendor, made_in. Поля используются только при автоматическом получении текста ресурса.</p>
         <label>Основной llms.txt<select id="lf-main_mode"><option value="auto">Собрать из выбранных страниц</option><option value="manual">Редактировать Markdown вручную</option></select></label>
         <div id="lf-manual-area" hidden><label>Содержимое llms.txt<textarea id="lf-main_markdown" rows="12" placeholder="# Название сайта"></textarea></label><p class="lf-muted">Ссылки на карточки LLMS добавятся в конец автоматически.</p></div>
         <div id="lf-auto-area">
@@ -27,7 +27,7 @@
         <details class="lf-advanced"><summary>Ручная настройка ID</summary><label>Выбранные ID в нужном порядке<input id="lf-include_ids" placeholder="1,12,15"></label><label>Исключить ID<input id="lf-exclude_ids" placeholder="Например: 8,9"></label></details>
         </div>
         <div class="lf-doc-heading"><h2>LLMS для отдельных страниц</h2><div class="lf-actions"><button id="lf-generate-documents" type="button">Создать карточки из выбранных</button><button id="lf-add-document" type="button">+ Добавить LLMS для страницы</button></div></div>
-        <p class="lf-muted">Автоматические карточки создаются для выбранных опубликованных страниц. Если задан поиск, используются только найденные страницы. Повторно карточки не создаются; максимум 200. Цена и другие поля miniShop3 появятся в карточках товаров, если указаны выше.</p>
+        <p class="lf-muted">Автоматические карточки создаются для выбранных опубликованных страниц. Если задан поиск, используются только найденные страницы. Повторно карточки не создаются; максимум 200. Цена и другие поля miniShop2 появятся в карточках товаров, если указаны выше.</p>
         <div id="lf-documents"></div>
         <div class="lf-actions"><button id="lf-save" class="lf-primary" type="button">Сохранить настройки</button><button id="lf-preview" type="button">Предпросмотр</button></div>
         <p class="lf-muted">После включения публикации адреса обслуживает MODX. Нужны настроенные Friendly URLs. Существующий файл или ресурс с таким адресом имеет приоритет.</p>
@@ -35,7 +35,7 @@
         const el = id => root.querySelector('#lf-' + id);
         let resources = [], sections = {}, documents = [], dirty = false, busy = false, current = '', preview = '', downloadName = 'llms.txt', pageIndex = 0;
         const pageSize = 25, expandedDocuments = new Set();
-        const fields = ['title', 'description', 'include_ids', 'exclude_ids', 'main_mode', 'main_markdown', 'enabled', 'tv_names', 'ms3_fields'];
+        const fields = ['title', 'description', 'include_ids', 'exclude_ids', 'main_mode', 'main_markdown', 'enabled', 'tv_names', 'ms2_fields'];
         function status(text, error = false) { el('status').textContent = text; el('status').className = error ? 'lf-error' : 'lf-notice'; }
         function changed() { dirty = true; preview = ''; mainBytes = null; stats(); el('download').disabled = true; el('preview-note').textContent = 'Настройки изменены. Обновите предпросмотр.'; status('Есть несохранённые изменения.'); }
         let mainBytes = null;

@@ -6,4 +6,4 @@ $_lang['llmsforge.description'] = 'Краткое описание';
 $_lang['llmsforge.include_ids'] = 'Выбранные ресурсы';
 $_lang['llmsforge.exclude_ids'] = 'Исключённые ресурсы';
 $_lang['llmsforge.tv_names'] = 'Имена TV для экспорта';
-$_lang['llmsforge.ms3_fields'] = 'Поля miniShop3 для экспорта';
+$_lang['llmsforge.ms2_fields'] = 'Поля miniShop2 для экспорта';

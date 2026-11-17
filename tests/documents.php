@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
-namespace MODX\Revolution {
-    class modResource { public function __construct(public array $data) {} public function get($key) { return $this->data[$key] ?? 0; } public function checkPolicy($policy) { return $this->data['view'] ?? true; } public function getTVValue($name) { return $this->data['tv'][$name] ?? ''; } }
+namespace {
+require_once dirname(__DIR__) . '/core/components/llmsforge/src/Compat.php';
+    class modResource { public array $data;
+    public function __construct(array $data) { $this->data = $data; } public function get($key) { return $this->data[$key] ?? 0; } public function checkPolicy($policy) { return $this->data['view'] ?? true; } public function getTVValue($name) { return $this->data['tv'][$name] ?? ''; } }
     class modResourceGroupResource {}
     class modX {
         public array $rows = [];
@@ -14,6 +16,7 @@ namespace MODX\Revolution {
     }
 }
 namespace {
+require_once dirname(__DIR__) . '/core/components/llmsforge/src/Compat.php';
     require dirname(__DIR__) . '/core/components/llmsforge/src/Documents.php';
     use LLMSForge\Documents;
     $item = ['slug' => 'guide', 'title' => 'Guide', 'url' => 'https://example.com/guide', 'mode' => 'manual', 'resource_id' => 0, 'markdown' => '# Guide', 'section' => 'Docs'];
@@ -22,14 +25,14 @@ namespace {
         try { Documents::validate(json_encode($invalid)); } catch (InvalidArgumentException $expected) { continue; }
         throw new RuntimeException('Invalid document accepted');
     }
-    $modx = new \MODX\Revolution\modX();
+    $modx = new \modX();
     $documents = new Documents($modx);
-    if (!str_contains($documents->markdown($item, 'web'), 'Источник: https://example.com/guide')) throw new RuntimeException('Missing source');
+    if (!\LLMSForge\Compat::contains($documents->markdown($item, 'web'), 'Источник: https://example.com/guide')) throw new RuntimeException('Missing source');
     $row = ['id' => 2, 'context_key' => 'web', 'published' => 1, 'deleted' => 0, 'searchable' => 1, 'pagetitle' => 'Product', 'description' => 'Summary', 'content' => '<p>Hello</p><script>secret()</script>[[!Private]]<p>World</p>'];
-    $modx->rows[2] = new \MODX\Revolution\modResource($row);
+    $modx->rows[2] = new \modResource($row);
     $auto = array_replace($item, ['mode' => 'resource', 'resource_id' => 2]);
     $text = $documents->markdown($auto, 'web');
-    if (!str_contains($text, "Hello\n\nWorld") || str_contains($text, 'secret') || str_contains($text, 'Private')) throw new RuntimeException('Unsafe conversion');
+    if (!\LLMSForge\Compat::contains($text, "Hello\n\nWorld") || \LLMSForge\Compat::contains($text, 'secret') || \LLMSForge\Compat::contains($text, 'Private')) throw new RuntimeException('Unsafe conversion');
     $modx->groups = [2];
     if ($documents->markdown($auto, 'web') !== null || $documents->links([$auto], 'web', 'https://example.com')) throw new RuntimeException('Grouped resource leaked');
     $modx->groups = [];

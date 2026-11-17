@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace LLMSForge;
 
-use MODX\Revolution\modX;
+use modX;
 
 require_once __DIR__ . '/Renderer.php';
 require_once __DIR__ . '/Documents.php';
 
 final class Generator
 {
-    public function __construct(private modX $modx) {}
+    private modX $modx;
+    public function __construct(modX $modx) { $this->modx = $modx; }
 
     public function generate(?string $contextKey = null, array $overrides = []): string
     {

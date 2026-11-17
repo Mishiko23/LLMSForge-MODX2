@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
+require_once dirname(__DIR__) . '/src/Compat.php';
 
-class LLMSForgeIndexManagerController extends \MODX\Revolution\modExtraManagerController
+class LLMSForgeIndexManagerController extends \modExtraManagerController
 {
     public function getPageTitle(): string { return 'LLMS Forge'; }
     public function getLanguageTopics(): array { return ['core:default', 'llmsforge:default']; }
@@ -14,7 +15,7 @@ class LLMSForgeIndexManagerController extends \MODX\Revolution\modExtraManagerCo
         $this->addCss($base . 'mgr.css?v=1.0.0');
         $this->addHtml('<script>window.LLMSForgeConfig=' . json_encode($config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';</script>');
         $this->addJavascript($base . 'mgr.js?v=1.0.0');
-        if (str_starts_with((string) $this->modx->getOption('cultureKey', null, 'ru'), 'en')) {
+        if (\LLMSForge\Compat::startsWith((string) $this->modx->getOption('cultureKey', null, 'ru'), 'en')) {
             $this->addJavascript($base . 'mgr.en.js?v=1.0.0');
         }
     }

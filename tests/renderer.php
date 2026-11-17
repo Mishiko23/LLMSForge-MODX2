@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once dirname(__DIR__) . '/core/components/llmsforge/src/Compat.php';
 require dirname(__DIR__) . '/core/components/llmsforge/src/Renderer.php';
 $renderer = new \LLMSForge\Renderer();
 $actual = $renderer->render('Example', '<b>Summary</b>', [
@@ -11,7 +12,7 @@ $expected = "# Example\n\n> Summary\n\n## Docs\n\n- [Guide](https://example.com/
 if ($actual !== $expected) { throw new RuntimeException('Unexpected document: ' . $actual); }
 if ($renderer->text('Hello [[!Secret]] <b>world</b>') !== 'Hello world') { throw new RuntimeException('Content cleanup failed'); }
 $escaped = $renderer->render('Site', '', [['title' => '[Injected]', 'url' => 'https://example.com/a(b)']]);
-if (!str_contains($escaped, '\\[Injected\\]') || !str_contains($escaped, 'a%28b%29')) { throw new RuntimeException('Escaping failed'); }
+if (!\LLMSForge\Compat::contains($escaped, '\\[Injected\\]') || !\LLMSForge\Compat::contains($escaped, 'a%28b%29')) { throw new RuntimeException('Escaping failed'); }
 try { $renderer->render('', '', []); throw new RuntimeException('Empty title accepted'); }
 catch (InvalidArgumentException $expectedError) {}
 echo "Renderer checks passed\n";

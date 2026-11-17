@@ -6,7 +6,7 @@
         'Время UTC': 'Time UTC', 'Бот (User-Agent)': 'Bot (User-Agent)', 'Адрес': 'Path', 'Метод / статус': 'Method / status',
         'Статистика текущих настроек': 'Current settings', 'Публикация для AI': 'AI publication', 'Доступность': 'Availability',
         'Выключена': 'Disabled', 'Опубликовать при сохранении': 'Publish on save', 'Описание сайта': 'Site description', 'Название сайта': 'Site title', 'Краткое описание': 'Short summary',
-        'TV для Markdown-карточек (имена через запятую)': 'TVs for Markdown cards (comma separated)', 'Поля miniShop3 для Markdown-карточек': 'miniShop3 fields for Markdown cards',
+        'TV для Markdown-карточек (имена через запятую)': 'TVs for Markdown cards (comma separated)', 'Поля miniShop2 для Markdown-карточек': 'miniShop2 fields for Markdown cards',
         'Основной llms.txt': 'Main llms.txt', 'Собрать из выбранных страниц': 'Build from selected pages', 'Редактировать Markdown вручную': 'Edit Markdown manually', 'Содержимое llms.txt': 'llms.txt content',
         'Поиск по названию или ID': 'Search by title or ID', 'Выбрать все найденные': 'Select all matches', 'Выбрать опубликованные': 'Select published',
         'Снять выбор найденных': 'Deselect matches', 'Инвертировать найденные': 'Invert matches', 'Очистить весь выбор': 'Clear selection', '← Назад': '← Previous', 'Вперёд →': 'Next →', 'Ручная настройка ID': 'Edit IDs manually',
