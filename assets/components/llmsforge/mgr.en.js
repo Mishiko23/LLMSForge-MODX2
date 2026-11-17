@@ -1,6 +1,7 @@
 (function () {
     'use strict';
     const labels = {
+        'LLMS Forge для MODX 2': 'LLMS Forge for MODX 2',
         'КОНТЕНТ ДЛЯ AI': 'CONTENT FOR AI', 'Контекст сайта': 'Site context', 'Проверка установки': 'Installation check', 'Проверить': 'Check',
         'Обращения AI-ботов': 'AI bot requests', 'Период': 'Period', 'Бот': 'Bot', 'Обновить журнал': 'Refresh log',
         'Время UTC': 'Time UTC', 'Бот (User-Agent)': 'Bot (User-Agent)', 'Адрес': 'Path', 'Метод / статус': 'Method / status',

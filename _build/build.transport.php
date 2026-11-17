@@ -15,7 +15,7 @@ if ((int) ($modx->getVersionData()['version'] ?? 0) !== 2) { throw new RuntimeEx
 $modx->loadClass('transport.modPackageBuilder', '', false, true);
 $builder = new modPackageBuilder($modx);
 }
-$builder->createPackage('llmsforge', '1.0.0', 'pl');
+$builder->createPackage('llmsforge', '1.0.1', 'pl');
 $namespace = $modx->newObject('modNamespace');
 $namespace->fromArray(['name' => 'llmsforge', 'path' => '{core_path}components/llmsforge/', 'assets_path' => '{assets_path}components/llmsforge/'], '', true);
 $builder->registerNamespace($namespace, false, true, '{core_path}components/llmsforge/');

@@ -1,3 +1,9 @@
+# 1.0.1-pl — 2026-11-17
+
+- Display “LLMS Forge для MODX 2” in the manager menu, page title and panel heading.
+- Preserve the existing menu key through lexicon translation so upgrades do not create a duplicate menu item.
+- Update Modstore display-name materials and rebuild the MODX 2 transport package.
+
 # MODX 2 port — 2026-11-17
 
 - MODX 2.8+ classes and package builder; miniShop2 product fields.

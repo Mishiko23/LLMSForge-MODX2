@@ -1,4 +1,4 @@
-# LLMS Forge — llms.txt generator for MODX 2
+# LLMS Forge for MODX 2 — llms.txt generator for MODX 2
 
 **Publisher:** Mishiko23 · **License:** GPL-3.0 · **Price:** Free
 

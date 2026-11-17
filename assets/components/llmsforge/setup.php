@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!$modx->commit()) { throw new RuntimeException('Не удалось завершить установку.'); }
         } catch (Throwable $error) { $modx->rollBack(); throw $error; }
         $installed = true;
-        $message = 'Модуль зарегистрирован. Обновите страницу админки: Компоненты → LLMS Forge. Существующие настройки сохранены.';
+        $message = 'Модуль зарегистрирован. Обновите страницу админки: Компоненты → LLMS Forge для MODX 2. Существующие настройки сохранены.';
         if (!$modx->cacheManager->refresh()) { $message .= ' Очистите кеш MODX вручную.'; }
     } catch (Throwable $error) {
         $modx->log(modX::LOG_LEVEL_ERROR, '[LLMSForge setup] ' . $error->getMessage());
@@ -80,10 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 $managerUrl = (string) $modx->getOption('manager_url', null, MODX_MANAGER_URL);
 ?>
-<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Установка LLMS Forge</title>
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Установка LLMS Forge для MODX 2</title>
 <style>body{font:16px/1.6 system-ui;background:#f2f5f7;color:#243347;margin:0;padding:40px 20px}main{max-width:700px;margin:auto;background:white;padding:32px;border:1px solid #dfe5eb;border-radius:12px}h1{margin-top:0}button,a{font:inherit}button{background:#236c5d;color:white;border:0;border-radius:6px;padding:12px 20px;cursor:pointer}.message{padding:16px;background:#edf3f1;border-radius:6px}code{overflow-wrap:anywhere}</style>
-<main><h1>Установка LLMS Forge</h1><p>Зарегистрирует меню, сниппет и настройки в MODX 2. Повторный запуск обновит код сниппета и меню, сохранив настройки сайта.</p>
+<main><h1>Установка LLMS Forge для MODX 2</h1><p>Зарегистрирует меню, сниппет и настройки в MODX 2. Повторный запуск обновит код сниппета и меню, сохранив настройки сайта.</p>
 <?php if ($message !== ''): ?><p class="message" role="status"><?= $escape($message) ?></p><?php endif; ?>
 <?php if (!$installed): ?><form method="post"><input type="hidden" name="csrf" value="<?= $escape($_SESSION['llmsforge_setup_csrf']) ?>"><button type="submit">Установить / обновить модуль</button></form><?php endif; ?>
-<p><a href="<?= $escape($managerUrl . '?a=index&namespace=llmsforge') ?>">Открыть LLMS Forge в админке</a></p>
+<p><a href="<?= $escape($managerUrl . '?a=index&namespace=llmsforge') ?>">Открыть LLMS Forge для MODX 2 в админке</a></p>
 <p>После успешной установки удалите <code>assets/components/llmsforge/setup.php</code> с сервера.</p></main></html>

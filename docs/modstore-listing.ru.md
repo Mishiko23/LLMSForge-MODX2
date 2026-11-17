@@ -1,8 +1,10 @@
-# LLMS Forge — карточка для modstore.pro
+# LLMS Forge для MODX 2 — карточка для modstore.pro
 
 ## Название
 
-llmsforge
+LLMS Forge для MODX 2
+
+Технический идентификатор пакета: `llmsforge`.
 
 ## Краткое описание
 
